@@ -4,9 +4,11 @@ import Header from './Header';
 import Cart from './Cart';
 import Home from './Home';
 import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom"
+import { CartProvider } from './CartContext';
 
 function App() {
   return (
+    <CartProvider>
     <Router>
     <div className="App">
        <Header />
@@ -24,6 +26,7 @@ function App() {
       </Switch> 
      </div>
     </Router>
+    </CartProvider>
   );
 }
 

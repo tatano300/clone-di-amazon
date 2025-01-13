@@ -1,74 +1,73 @@
+import React, { useContext } from "react";
+import styled from "styled-components";
+import { CartContext } from "./CartContext";
 
-import React from 'react'
-import styled from 'styled-components';
+function Product({ title, description, price, image }) {
+  const { addToCart } = useContext(CartContext); // Accedi alla funzione addToCart dal contesto
 
-function Product( {title, description, price, image}) {
-    return (
-        <Container>
-            <Image src={image} alt="Product Image" />
-            <Details>
-                <Title>{title}</Title>
-                <Description>{description}</Description>
-                <Price>{price}</Price>
-                <CTAButton>Scopri di Più</CTAButton>
-            </Details>
-        </Container>
-    )
+  const handleAddToCart = () => {
+    addToCart({ title, description, price, image });
+  };
+
+  return (
+    <Container>
+      <Image src={image} alt={title} />
+      <Details>
+        <Title>{title}</Title>
+        <Description>{description}</Description>
+        <Price>{price}</Price>
+        <CTAButton onClick={handleAddToCart}>Aggiungi al carrello</CTAButton>
+      </Details>
+    </Container>
+  );
 }
 
 export default Product;
 
 const Container = styled.div`
- background-color: white;
-  z-index: 100;
-  width: 300px;
-  height: auto;
-  border: 1px solid lightgray;
-  border-radius: 10px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column; /* Posiziona gli elementi uno sotto l'altro */
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra leggera */
-  gap: 15px; /* Spaziatura tra gli elementi */
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  max-width: 300px;
 `;
+
 const Image = styled.img`
-  max-width: 100%; /* L'immagine si adatta alla larghezza della card */
+  max-width: 100%;
   height: auto;
-  border-radius: 10px; /* Bordo arrotondato */
+  border-radius: 5px;
 `;
 
 const Details = styled.div`
-  text-align: center;
+  margin-top: 10px;
 `;
 
-const Title = styled.h2`
+const Title = styled.h3`
   font-size: 18px;
-  margin: 10px 0;
 `;
 
 const Description = styled.p`
   font-size: 14px;
-  color: gray;
-  margin: 10px 0;
+  color: #555;
 `;
 
-const Price = styled.h3`
-  font-size: 20px;
-  margin: 10px 0;
+const Price = styled.p`
+  font-size: 16px;
   color: #e07a00;
+  margin: 5px 0;
 `;
 
 const CTAButton = styled.button`
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: black;
-  border-radius: 20px;
-  cursor: pointer;
+  padding: 10px;
+  font-size: 14px;
+  color: white;
+  background-color: #007bff;
   border: none;
+  border-radius: 5px;
+  cursor: pointer;
 
   &:hover {
-    background-color: #e07a00;
+    background-color: #0056b3;
   }
 `;

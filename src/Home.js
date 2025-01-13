@@ -124,7 +124,6 @@ const CTAButton = styled.button`
 `
 
 const Content = styled.div`
-  background: white;
   padding: 20px;
   margin-top: -50px;
   display: grid; /* Usa un layout a griglia */
