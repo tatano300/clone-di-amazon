@@ -8,7 +8,7 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (product) => {
-    setCart(prevCart => [...prevCart, product]);
+    setCart(prevCart => [...prevCart, { ...product, id: Date.now() }]); // Assegna ID unico
   };
 
   // Funzione per rimuovere un prodotto dal carrello
@@ -17,12 +17,10 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
 };
 
-// Esporta separatamente CartContext
 export { CartContext };
-

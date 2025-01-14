@@ -5,23 +5,19 @@ import { CartContext } from "./CartContext";
 function Cart() {
   const { cart, removeFromCart } = useContext(CartContext);
 
-  const handleRemove = (productId) => {
-    removeFromCart(productId);  // Chiama la funzione removeFromCart
-  };
-
   return (
     <Container>
       <Title>Il tuo carrello</Title>
       {cart.length === 0 ? (
         <EmptyMessage>Il carrello è vuoto.</EmptyMessage>
       ) : (
-        cart.map((item, index) => (
-          <CartItem key={index}>
+        cart.map((item) => ( // Non usiamo più `index`
+          <CartItem key={item.id}>
             <Image src={item.image} alt={item.title} />
             <Details>
               <ProductTitle>{item.title}</ProductTitle>
               <ProductPrice>{item.price}</ProductPrice>
-              <RemoveButton onClick={() => removeFromCart(index)}>
+              <RemoveButton onClick={() => removeFromCart(item.id)}>
                 Rimuovi
               </RemoveButton>
             </Details>
@@ -33,6 +29,9 @@ function Cart() {
 }
 
 export default Cart;
+
+// Styled Components (rimangono invariati)
+
 
 const Container = styled.div`
   padding: 20px;
