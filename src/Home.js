@@ -10,7 +10,7 @@ function Home() {
                     <Logo src="https://m.media-amazon.com/images/G/01/AmazonMusic/Logos/Tiers/AMU/AmazonMusic_Unlimited_TwoStack_Black.png" />
                     <OfferText>3 mesi di uso gratuito</OfferText>
                     <LimitedTime>Offerta a tempo limitato</LimitedTime>
-                    <CTAButton>Scopri di più</CTAButton>
+                    <CTAButton href="https://music.amazon.it" target="_blank" rel="noopener noreferrer">Scopri di più</CTAButton>
                 </BannerContent>
             </Banner>
             <Content>
@@ -109,7 +109,7 @@ const LimitedTime = styled.h2`
   margin: 20px 0;
 `
 
-const CTAButton = styled.button`
+const CTAButton = styled.a`
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
@@ -117,11 +117,13 @@ const CTAButton = styled.button`
   background-color: black; 
   border-radius: 20px;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
 
   &:hover {
     background-color: #e07a00;
   }
-`
+`;
 
 const Content = styled.div`
   padding: 20px;
