@@ -4,34 +4,46 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import logo from './image/amazon-logo.png'; 
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 function Header() {
   // Stato per la ricerca
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  // Elenco dei prodotti disponibili
+  const products = [
+    "Cuffie Bluetooth",
+    "Smartwatch",
+    "Zaino Casual",
+    "Tastiera Meccanica",
+    "Lampada LED",
+    "Mouse Gaming",
+    "PlayStation 5",
+    "Joystick Wireless Xbox"
+  ];
 
   // Funzione per gestire l'input della barra di ricerca
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  // Funzione per eseguire la ricerca (al click sull'icona o al pressare "Enter")
-  const handleSearchSubmit = () => {
-    if (searchTerm.trim() !== "") {
-      console.log("Esegui la ricerca per:", searchTerm);
-      // Puoi aggiungere la logica per indirizzare la ricerca a una nuova pagina
+    const term = e.target.value;
+    setSearchTerm(term);
+  
+    if (term.trim() !== "") {
+      const filtered = products.filter((product) =>
+        product.toLowerCase().includes(term.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]);
     }
   };
 
-  // Funzione per gestire l'invio quando si preme "Enter"
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearchSubmit();
+  // Funzione per eseguire la ricerca
+  const handleSearchSubmit = () => {
+    if (searchTerm.trim() !== "") {
+      console.log("Esegui la ricerca per:", searchTerm);
+      // Puoi aggiungere la logica per reindirizzare a una pagina specifica
     }
   };
 
@@ -39,48 +51,65 @@ function Header() {
     <Container>
       <HeaderLogo>
         <Link to="/">
-          <img src={logo} alt="Amazon Logo"/>
+          <img src={logo} alt="Amazon Logo" />
         </Link>
       </HeaderLogo>
 
-      <HeaderOptionAddress>
-        <LocationOnIcon/>
-        <HeaderOption>
-          <OptionLineOne>Hello</OptionLineOne>
-          <OptionLineTwo>Select your Address</OptionLineTwo>
-        </HeaderOption>
-      </HeaderOptionAddress>
+      {/* Cliccabile: "Hello, Select your Address" con Link */}
+      <Link to="/select-address">
+        <HeaderOptionAddress>
+          <LocationOnIcon />
+          <HeaderOption>
+            <OptionLineOne>Hello</OptionLineOne>
+            <OptionLineTwo>Select your Address</OptionLineTwo>
+          </HeaderOption>
+        </HeaderOptionAddress>
+      </Link>
 
       <HeaderSearch>
-        <HeaderSearchInput 
+        <HeaderSearchInput
           type="text"
-          value={searchTerm} 
-          onChange={handleSearchChange} 
-          onKeyPress={handleKeyPress} // Aggiungi gestione pressione "Enter"
-          placeholder="Cerca prodotti, categorie..." 
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="Cerca prodotti, categorie..."
         />
         <HeaderSearchIconContainer onClick={handleSearchSubmit}>
           <SearchIcon />
         </HeaderSearchIconContainer>
+        {filteredProducts.length > 0 ? (
+          <div>
+            {filteredProducts.map((product, index) => (
+              <div key={index}>{product}</div>
+            ))}
+          </div>
+        ) : (
+          <div style={{ color: 'red' }}>Nessun suggerimento trovato</div>
+        )}
       </HeaderSearch>
 
       <HeaderNavItems>
-        <HeaderOption>
-          <OptionLineOne>Hello, Nazarli</OptionLineOne>
-          <OptionLineTwo>Account & Lists</OptionLineTwo>
-        </HeaderOption>
+        {/* Cliccabile: "Hello, Gaetano - Account & Lists" */}
+        <Link to="/account">
+          <HeaderOption>
+            <OptionLineOne>Hello, Gaetano</OptionLineOne>
+            <OptionLineTwo>Account & Lists</OptionLineTwo>
+          </HeaderOption>
+        </Link>
 
-        <HeaderOption>
-          <OptionLineOne>Returns</OptionLineOne>
-          <OptionLineTwo>& Orders</OptionLineTwo>  
-        </HeaderOption>
+        {/* Cliccabile: "Returns & Orders" */}
+        <Link to="/returns">
+          <HeaderOption>
+            <OptionLineOne>Returns</OptionLineOne>
+            <OptionLineTwo>& Orders</OptionLineTwo>
+          </HeaderOption>
+        </Link>
 
         <HeaderOptionCart>
           <Link to="/cart">
-            <ShoppingBasketIcon/>
+            <ShoppingBasketIcon />
             <CartCount>4</CartCount>
           </Link>
-        </HeaderOptionCart> 
+        </HeaderOptionCart>
       </HeaderNavItems>
     </Container>
   );
@@ -88,6 +117,8 @@ function Header() {
 
 export default Header;
 
+
+// Styled components
 const Container = styled.div`
   height: 60px;
   background-color: #0f1111;
@@ -128,19 +159,19 @@ const HeaderSearch = styled.div`
   overflow: hidden;
   margin-left: 4px;
   background-color: white;
+  position: relative; /* Necessario per posizionare i suggerimenti */
 `;
 
 const HeaderSearchInput = styled.input`
   flex-grow: 1;
-  border: 2px solid transparent; /* Bordo trasparente di default */
+  border: 2px solid transparent;
   padding-left: 10px;
   height: 100%;
   font-size: 14px;
 
-  /* Quando l'input ha il focus, cambia il bordo */
   :focus {
-    outline: none; /* Rimuovi il bordo blu predefinito */
-    border: 2px solid #f90 !important; /* Imposta il bordo arancione */
+    outline: none;
+    border: 2px solid #f90 !important;
   }
 `;
 
@@ -151,7 +182,27 @@ const HeaderSearchIconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer; /* Cambia il cursore quando l'utente ci passa sopra */
+  cursor: pointer;
+`;
+
+const Suggestions = styled.div`
+  position: absolute;
+  top: 100%; /* Mostra i suggerimenti sotto la barra di ricerca */
+  left: 0;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+`;
+
+const SuggestionItem = styled.div`
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
 `;
 
 const HeaderNavItems = styled.div`
