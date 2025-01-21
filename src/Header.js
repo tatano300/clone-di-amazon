@@ -8,11 +8,9 @@ import { Link } from "react-router-dom";
 
 
 function Header() {
-  // Stato per la ricerca
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  // Elenco dei prodotti disponibili
   const products = [
     "Cuffie Bluetooth",
     "Smartwatch",
@@ -24,7 +22,6 @@ function Header() {
     "Joystick Wireless Xbox"
   ];
 
-  // Funzione per gestire l'input della barra di ricerca
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -39,11 +36,9 @@ function Header() {
     }
   };
 
-  // Funzione per eseguire la ricerca
   const handleSearchSubmit = () => {
     if (searchTerm.trim() !== "") {
       console.log("Esegui la ricerca per:", searchTerm);
-      // Puoi aggiungere la logica per reindirizzare a una pagina specifica
     }
   };
 
@@ -55,8 +50,8 @@ function Header() {
         </Link>
       </HeaderLogo>
 
-      {/* Cliccabile: "Hello, Select your Address" con Link */}
-      <Link to="/select-address">
+      {/* Cliccabile: "Hello, Select your Address" */}
+      <Link to="/select-address" style={{ textDecoration: 'none', color: 'inherit' }}>
         <HeaderOptionAddress>
           <LocationOnIcon />
           <HeaderOption>
@@ -88,16 +83,14 @@ function Header() {
       </HeaderSearch>
 
       <HeaderNavItems>
-        {/* Cliccabile: "Hello, Gaetano - Account & Lists" */}
-        <Link to="/account">
+        <Link to="/account" style={{ textDecoration: 'none', color: 'inherit' }}>
           <HeaderOption>
             <OptionLineOne>Hello, Gaetano</OptionLineOne>
             <OptionLineTwo>Account & Lists</OptionLineTwo>
           </HeaderOption>
         </Link>
 
-        {/* Cliccabile: "Returns & Orders" */}
-        <Link to="/returns">
+        <Link to="/returns" style={{ textDecoration: 'none', color: 'inherit' }}>
           <HeaderOption>
             <OptionLineOne>Returns</OptionLineOne>
             <OptionLineTwo>& Orders</OptionLineTwo>
