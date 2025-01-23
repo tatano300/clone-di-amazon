@@ -1,8 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
-import Product from './Product'
+import React, { useContext } from 'react';
+import styled from 'styled-components';
+import { CartContext } from './CartContext'; // Importa il contesto
+import Product from './Product';
 
 function Home() {
+    const { addToCart } = useContext(CartContext); // Ottieni la funzione addToCart dal contesto
+
     return (
         <Container>
             <Banner>
@@ -14,56 +17,71 @@ function Home() {
                 </BannerContent>
             </Banner>
             <Content>
-            <Grid>
-              <Product 
-              title="Cuffie Bluetooth"
+                <Grid>
+                    <Product 
+                        title="Cuffie Bluetooth"
                         description="Cuffie wireless con audio stereo"
                         price="€49.99"
                         image="https://primopromo.it/1341789-large_default/cuffie-bluetooth-in-plastica-riciclata-loop.jpg"
-                  />
-              <Product 
-              title="Smartwatch"
+                        addToCart={addToCart} // Passa addToCart come prop
+                    />
+                    <Product 
+                        title="Smartwatch"
                         description="Orologio intelligente con monitoraggio attività"
                         price="€89.99"
                         image="https://cdn.sectornolimits.com/i/huge/72278/sector-smartwatch-s03-r3251282002_v1n21a.jpg"
-                        />
-              <Product 
-               title="Zaino Casual"
-               description="Zaino resistente per laptop e viaggio"
-               price="€60.00"
-               image="https://www.trippodo.com/856935-large_default/wenger-swissgear-mx-eco-light-zaino-zaino-casual-grigio-plastica-riciclata.jpg"/>
-              <Product 
-               title="Tastiera Meccanica"
-               description="Tastiera RGB con switch silenziosi"
-               price="€80.00"
-               image="https://breunor.com/cdn/shop/files/1_ae0f39c7-f423-411d-b25a-823291908736.jpg?v=1717667367"/>
-              <Product 
-               title="Lampada LED"
-               description="Lampada smart con controllo vocale"
-               price="€40.00"
-               image="https://www.ledleditalia.it/wp-content/uploads/2023/02/lampadina-led-e27-a-tubo-a-spirale-20w-bianco-caldo-3000k-aigostar.jpg"/>
-              <Product 
-               title="Mouse Gaming"
-               description="Mouse gaming ad alta precisione"
-               price="€100.00"
-               image="https://www.pcfrog.it/wp-content/uploads/2024/04/MOUS87520-20000206691.webp"/>
-              <Product
-               title="playstation 5"
-               description="console di ultima generazione"
-               price="€200.00"
-               image="https://media.direct.playstation.com/is/image/psdglobal/PS5-Slim-Hero-4"/>
-              <Product 
-               title="joystick wireless xbox "
-               description="joystick wireless verde "
-               price="€20.00"
-               image="https://www.e-stayon.com/images/thumbs/0225838_microsoft-controller-wireless-per-xbox-velocity-green.jpeg.webp"/>
-              </Grid>
-           </Content>
+                        addToCart={addToCart} // Passa addToCart come prop
+                    />
+                    <Product 
+                        title="Zaino Casual"
+                        description="Zaino resistente per laptop e viaggio"
+                        price="€60.00"
+                        image="https://www.trippodo.com/856935-large_default/wenger-swissgear-mx-eco-light-zaino-zaino-casual-grigio-plastica-riciclata.jpg"
+                        addToCart={addToCart} // Passa addToCart come prop
+                    />
+                    <Product 
+                        title="Tastiera Meccanica"
+                        description="Tastiera RGB con switch silenziosi"
+                        price="€80.00"
+                        image="https://breunor.com/cdn/shop/files/1_ae0f39c7-f423-411d-b25a-823291908736.jpg?v=1717667367"
+                        addToCart={addToCart} // Passa addToCart come prop
+                    />
+                    <Product 
+                        title="Lampada LED"
+                        description="Lampada smart con controllo vocale"
+                        price="€40.00"
+                        image="https://www.ledleditalia.it/wp-content/uploads/2023/02/lampadina-led-e27-a-tubo-a-spirale-20w-bianco-caldo-3000k-aigostar.jpg"
+                        addToCart={addToCart} // Passa addToCart come prop
+                    />
+                    <Product 
+                        title="Mouse Gaming"
+                        description="Mouse gaming ad alta precisione"
+                        price="€100.00"
+                        image="https://www.pcfrog.it/wp-content/uploads/2024/04/MOUS87520-20000206691.webp"
+                        addToCart={addToCart} // Passa addToCart come prop
+                    />
+                    <Product
+                        title="Playstation 5"
+                        description="Console di ultima generazione"
+                        price="€200.00"
+                        image="https://media.direct.playstation.com/is/image/psdglobal/PS5-Slim-Hero-4"
+                        addToCart={addToCart} // Passa addToCart come prop
+                    />
+                    <Product 
+                        title="Joystick Wireless Xbox"
+                        description="Joystick wireless verde"
+                        price="€20.00"
+                        image="https://www.e-stayon.com/images/thumbs/0225838_microsoft-controller-wireless-per-xbox-velocity-green.jpeg.webp"
+                        addToCart={addToCart} // Passa addToCart come prop
+                    />
+                </Grid>
+            </Content>
         </Container>
-    )
+    );
 }
 
-export default Home
+export default Home;
+
 
 const Container = styled.div`
   width: 100%;

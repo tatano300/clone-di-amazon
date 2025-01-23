@@ -11,7 +11,7 @@ function Cart() {
       {cart.length === 0 ? (
         <EmptyMessage>Il carrello è vuoto.</EmptyMessage>
       ) : (
-        cart.map((item) => ( // Non usiamo più `index`
+        cart.map((item) => (
           <CartItem key={item.id}>
             <Image src={item.image} alt={item.title} />
             <Details>
@@ -30,6 +30,11 @@ function Cart() {
 
 export default Cart;
 
+
+const Quantity = styled.p`
+  font-size: 14px;
+  margin: 5px 0;
+`;
 
 
 

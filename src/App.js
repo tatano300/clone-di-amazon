@@ -1,31 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from './Header';
 import Cart from './Cart';
 import Home from './Home';
-import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom"
+import SelectAddress from './SelectAddress';
+import ProductPage from './ProductPage';
 import { CartProvider } from './CartContext';
 
 function App() {
   return (
     <CartProvider>
-    <Router>
-    <div className="App">
-       <Header />
-
-       <Switch>
-
-        <Route path="/cart">
-         <Cart />
-        </Route>
-
-        <Route path="/">
-          <Home />
-        </Route>
-     
-      </Switch> 
-     </div>
-    </Router>
+      <Router>
+        <div className="App">
+          <Header />
+          <Switch>
+            <Route path="/cart">
+              <Cart />
+            </Route>
+            <Route path="/select-address">
+              <SelectAddress />
+            </Route>
+            <Route path="/product/:productName">
+              <ProductPage />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </CartProvider>
   );
 }
