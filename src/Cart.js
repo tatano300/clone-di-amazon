@@ -12,12 +12,12 @@ function Cart() {
         <EmptyMessage>Il carrello è vuoto.</EmptyMessage>
       ) : (
         cart.map((item) => (
-          <CartItem key={item.id}>
+          <CartItem key={item.title}>
             <Image src={item.image} alt={item.title} />
             <Details>
               <ProductTitle>{item.title}</ProductTitle>
               <ProductPrice>{item.price}</ProductPrice>
-              <RemoveButton onClick={() => removeFromCart(item.id)}>
+              <RemoveButton onClick={() => removeFromCart(item.title)}>
                 Rimuovi
               </RemoveButton>
             </Details>

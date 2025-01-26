@@ -6,11 +6,12 @@ const CartContext = createContext();
 // Crea il provider
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+  const [address, setAddress] = useState(""); // Stato per l'indirizzo
 
   // Aggiunge un prodotto al carrello, incrementa la quantità se esiste già
   const addToCart = (product) => {
     setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id);
+      const existingProduct = prevCart.find((item) => item.title === product.title);
       if (existingProduct) {
         // Incrementa la quantità
         return prevCart.map((item) =>
@@ -25,7 +26,7 @@ export const CartProvider = ({ children }) => {
   // Rimuove un prodotto dal carrello o decrementa la quantità
   const removeFromCart = (productId) => {
     setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === productId);
+      const existingProduct = prevCart.find((item) => item.title === productId);
       if (existingProduct && existingProduct.quantity > 1) {
         // Decrementa la quantità
         return prevCart.map((item) =>
@@ -33,16 +34,17 @@ export const CartProvider = ({ children }) => {
         );
       }
       // Rimuove completamente il prodotto se la quantità è 1
-      return prevCart.filter((item) => item.id !== productId);
+      return prevCart.filter((item) => item.title !== productId);
     });
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, address, setAddress }} // Aggiunto address e setAddress
+    >
       {children}
     </CartContext.Provider>
   );
 };
 
 export { CartContext };
-

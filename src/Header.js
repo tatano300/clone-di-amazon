@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react'; 
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import logo from './image/amazon-logo.png'; 
 import { Link } from "react-router-dom";
+import { CartContext } from './CartContext'; 
 
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const { address } = useContext(CartContext);
+  const { cart } = useContext(CartContext); 
 
   const products = [
     "Cuffie Bluetooth",
@@ -55,8 +58,8 @@ function Header() {
         <HeaderOptionAddress>
           <LocationOnIcon />
           <HeaderOption>
-            <OptionLineOne>Hello</OptionLineOne>
-            <OptionLineTwo>Select your Address</OptionLineTwo>
+            <OptionLineOne>Invia a Gaetano</OptionLineOne>
+            <OptionLineTwo> {address ? `${address}` : "Select your Address"}</OptionLineTwo>
           </HeaderOption>
         </HeaderOptionAddress>
       </Link>
@@ -100,7 +103,7 @@ function Header() {
         <HeaderOptionCart>
           <Link to="/cart">
             <ShoppingBasketIcon />
-            <CartCount>4</CartCount>
+            <CartCount>{cart.length}</CartCount>
           </Link>
         </HeaderOptionCart>
       </HeaderNavItems>
