@@ -6,6 +6,7 @@ import Home from './Home';
 import SelectAddress from './SelectAddress';
 import ProductPage from './ProductPage';
 import { CartProvider } from './CartContext';
+import Account from './Account'
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
             </Route>
             <Route path="/product/:productName">
               <ProductPage />
+            </Route>
+            <Route path="/account">
+              <Account />
             </Route>
             <Route path="/">
               <Home />

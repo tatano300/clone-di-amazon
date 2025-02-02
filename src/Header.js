@@ -1,37 +1,77 @@
+// Header.js
 import React, { useState, useContext } from 'react'; 
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import logo from './image/amazon-logo.png'; 
-import { Link } from "react-router-dom";
-import { CartContext } from './CartContext'; 
-
+import { Link } from 'react-router-dom';
+import { CartContext } from './CartContext';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const { address } = useContext(CartContext);
-  const { cart } = useContext(CartContext); 
+  const { address, cart, addToCart } = useContext(CartContext);
 
+  // Dati dei prodotti (uguali a quelli usati in Home.js)
   const products = [
-    "Cuffie Bluetooth",
-    "Smartwatch",
-    "Zaino Casual",
-    "Tastiera Meccanica",
-    "Lampada LED",
-    "Mouse Gaming",
-    "PlayStation 5",
-    "Joystick Wireless Xbox"
+    {
+      title: "Cuffie Bluetooth",
+      description: "Cuffie wireless con audio stereo",
+      price: "€49.99",
+      image: "https://primopromo.it/1341789-large_default/cuffie-bluetooth-in-plastica-riciclata-loop.jpg"
+    },
+    {
+      title: "Smartwatch",
+      description: "Orologio intelligente con monitoraggio attività",
+      price: "€89.99",
+      image: "https://cdn.sectornolimits.com/i/huge/72278/sector-smartwatch-s03-r3251282002_v1n21a.jpg"
+    },
+    {
+      title: "Zaino Casual",
+      description: "Zaino resistente per laptop e viaggio",
+      price: "€60.00",
+      image: "https://www.trippodo.com/856935-large_default/wenger-swissgear-mx-eco-light-zaino-zaino-casual-grigio-plastica-riciclata.jpg"
+    },
+    {
+      title: "Tastiera Meccanica",
+      description: "Tastiera RGB con switch silenziosi",
+      price: "€80.00",
+      image: "https://breunor.com/cdn/shop/files/1_ae0f39c7-f423-411d-b25a-823291908736.jpg?v=1717667367"
+    },
+    {
+      title: "Lampada LED",
+      description: "Lampada smart con controllo vocale",
+      price: "€40.00",
+      image: "https://www.ledleditalia.it/wp-content/uploads/2023/02/lampadina-led-e27-a-tubo-a-spirale-20w-bianco-caldo-3000k-aigostar.jpg"
+    },
+    {
+      title: "Mouse Gaming",
+      description: "Mouse gaming ad alta precisione",
+      price: "€100.00",
+      image: "https://www.pcfrog.it/wp-content/uploads/2024/04/MOUS87520-20000206691.webp"
+    },
+    {
+      title: "Playstation 5",
+      description: "Console di ultima generazione",
+      price: "€200.00",
+      image: "https://media.direct.playstation.com/is/image/psdglobal/PS5-Slim-Hero-4"
+    },
+    {
+      title: "Joystick Wireless Xbox",
+      description: "Joystick wireless verde",
+      price: "€20.00",
+      image: "https://www.e-stayon.com/images/thumbs/0225838_microsoft-controller-wireless-per-xbox-velocity-green.jpeg.webp"
+    }
   ];
 
+  // Gestione della ricerca: filtra i prodotti in base al titolo
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
-  
     if (term.trim() !== "") {
-      const filtered = products.filter((product) =>
-        product.toLowerCase().includes(term.toLowerCase())
+      const filtered = products.filter(product => 
+        product.title.toLowerCase().includes(term.toLowerCase())
       );
       setFilteredProducts(filtered);
     } else {
@@ -45,27 +85,44 @@ function Header() {
     }
   };
 
+  // Seleziona il prodotto cliccato nel dropdown: imposta il titolo nell'input e nasconde il dropdown
+  const handleSuggestionClick = (product) => {
+    setSearchTerm(product.title);
+    setFilteredProducts([]);
+    // Qui puoi anche navigare verso la pagina del prodotto se lo desideri
+  };
+
+  // Gestore del pulsante "Aggiungi al carrello"
+  const handleAddToCart = (product, e) => {
+    // Impedisce che il click sul pulsante faccia scatenare anche il click sul suggerimento
+    e.stopPropagation();
+    if (addToCart) {
+      addToCart(product);
+    } else {
+      console.log("Aggiungi al carrello:", product);
+    }
+  };
+
   return (
     <Container>
       <HeaderLogo>
         <Link to="/">
-          <img src={logo} alt="Amazon Logo" />
+          <img src={logo} alt="Logo" />
         </Link>
       </HeaderLogo>
 
-      {/* Cliccabile: "Hello, Select your Address" */}
       <Link to="/select-address" style={{ textDecoration: 'none', color: 'inherit' }}>
         <HeaderOptionAddress>
           <LocationOnIcon />
           <HeaderOption>
             <OptionLineOne>Invia a Gaetano</OptionLineOne>
-            <OptionLineTwo> {address ? `${address}` : "Select your Address"}</OptionLineTwo>
+            <OptionLineTwo>{address ? address : "Select your Address"}</OptionLineTwo>
           </HeaderOption>
         </HeaderOptionAddress>
       </Link>
 
       <HeaderSearch>
-        <HeaderSearchInput
+        <HeaderSearchInput 
           type="text"
           value={searchTerm}
           onChange={handleSearchChange}
@@ -74,14 +131,26 @@ function Header() {
         <HeaderSearchIconContainer onClick={handleSearchSubmit}>
           <SearchIcon />
         </HeaderSearchIconContainer>
-        {filteredProducts.length > 0 ? (
-          <div>
-            {filteredProducts.map((product, index) => (
-              <div key={index}>{product}</div>
-            ))}
-          </div>
-        ) : (
-          <div style={{ color: 'red' }}>Nessun suggerimento trovato</div>
+
+        {/* Dropdown con suggerimenti: mostra l'immagine completa, il titolo e il pulsante "Aggiungi al carrello" */}
+        {searchTerm && (
+          <Suggestions>
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product, index) => (
+                <SuggestionItem key={index} onClick={() => handleSuggestionClick(product)}>
+                  <ProductImage src={product.image} alt={product.title} />
+                  <ProductName>{product.title}</ProductName>
+                  <AddToCartButton onClick={(e) => handleAddToCart(product, e)}>
+                    Aggiungi al carrello
+                  </AddToCartButton>
+                </SuggestionItem>
+              ))
+            ) : (
+              <SuggestionItem>
+                Nessun suggerimento trovato
+              </SuggestionItem>
+            )}
+          </Suggestions>
         )}
       </HeaderSearch>
 
@@ -113,9 +182,8 @@ function Header() {
 
 export default Header;
 
+// Styled Components
 
-
-// Styled components
 const Container = styled.div`
   height: 60px;
   background-color: #0f1111;
@@ -153,10 +221,10 @@ const HeaderSearch = styled.div`
   flex-grow: 1;
   height: 35px;
   border-radius: 4px;
-  overflow: hidden;
+  overflow: visible; /* Consente al dropdown di espandersi oltre la barra */
   margin-left: 4px;
   background-color: white;
-  position: relative; /* Necessario per posizionare i suggerimenti */
+  position: relative;
 `;
 
 const HeaderSearchInput = styled.input`
@@ -165,7 +233,6 @@ const HeaderSearchInput = styled.input`
   padding-left: 10px;
   height: 100%;
   font-size: 14px;
-
   :focus {
     outline: none;
     border: 2px solid #f90 !important;
@@ -184,7 +251,7 @@ const HeaderSearchIconContainer = styled.div`
 
 const Suggestions = styled.div`
   position: absolute;
-  top: 100%; /* Mostra i suggerimenti sotto la barra di ricerca */
+  top: 100%; /* Appena sotto la barra di ricerca */
   left: 0;
   width: 100%;
   background-color: white;
@@ -193,12 +260,41 @@ const Suggestions = styled.div`
 `;
 
 const SuggestionItem = styled.div`
+  display: flex;
+  align-items: center;
   padding: 10px;
-  cursor: pointer;
   font-size: 14px;
-
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  
   &:hover {
     background-color: #f0f0f0;
+  }
+`;
+
+const ProductImage = styled.img`
+  width: 50px;
+  height: 50px;
+  object-fit: contain; /* Garantisce che l'intera immagine sia visibile */
+  margin-right: 10px;
+`;
+
+const ProductName = styled.div`
+  flex-grow: 1;
+  color: black;
+`;
+
+const AddToCartButton = styled.button`
+  background-color: #febd69;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+  
+  &:hover {
+    background-color: #f90;
   }
 `;
 
@@ -207,11 +303,12 @@ const HeaderNavItems = styled.div`
 `;
 
 const HeaderOption = styled.div`
-  padding: 10px 9px 10px 9px;
+  padding: 10px 9px;
 `;
 
 const HeaderOptionCart = styled.div`
   display: flex;
+  
   a {
     display: flex;
     align-items: center;
@@ -222,7 +319,7 @@ const HeaderOptionCart = styled.div`
 `;
 
 const CartCount = styled.div`
-  color: white; 
+  color: white;
   font-weight: 700;
   margin-left: 5px;
 `;
