@@ -12,15 +12,21 @@ function OrderHistory() {
         <EmptyMessage>Non hai ancora effettuato ordini.</EmptyMessage>
       ) : (
         <OrderList>
-          {orders.map((item, index) => (
-            <OrderItem key={index}>
-              <Image src={item.image} alt={item.title} />
-              <Details>
-                <ProductTitle>{item.title}</ProductTitle>
-                <ProductPrice>{item.price}</ProductPrice>
-              </Details>
-            </OrderItem>
-          ))}
+          {orders.map((item, index) => {
+            let itemPrice = parseFloat((item.price || "").replace("€", "")) || 0;
+            let totalItemPrice = (item.quantity * itemPrice).toFixed(2);
+            return (
+              <OrderItem key={index}>
+                <Image src={item.image} alt={item.title} />
+                <Details>
+                  <ProductTitle>{item.title}</ProductTitle>
+                  <ProductInfo>Prezzo unitario: €{itemPrice.toFixed(2)}</ProductInfo>
+                  <ProductInfo>Quantità: {item.quantity}</ProductInfo>
+                  <ProductTotal>Prezzo Totale: €{totalItemPrice}</ProductTotal>
+                </Details>
+              </OrderItem>
+            );
+          })}
         </OrderList>
       )}
     </Container>
@@ -72,8 +78,14 @@ const ProductTitle = styled.h3`
   margin: 0;
 `;
 
-const ProductPrice = styled.p`
+const ProductInfo = styled.p`
   font-size: 16px;
+  margin: 5px 0;
+`;
+
+const ProductTotal = styled.p`
+  font-size: 16px;
+  font-weight: bold;
   color: #e07a00;
   margin: 5px 0;
 `;

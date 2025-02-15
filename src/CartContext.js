@@ -24,20 +24,23 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Rimuove un prodotto dal carrello o decrementa la quantità
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.title === productId);
-      if (existingProduct && existingProduct.quantity > 1) {
-        // Decrementa la quantità
-        return prevCart.map((item) =>
-          item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
-        );
+// Rimuove un prodotto dal carrello o decrementa la quantità
+const removeFromCart = (productTitle) => {
+  setCart((prevCart) => {
+    return prevCart.reduce((acc, item) => {
+      if (item.title === productTitle) {
+        if (item.quantity > 1) {
+          acc.push({ ...item, quantity: item.quantity - 1 });
+        }
+        // Se la quantità è 1, non viene aggiunto alla nuova lista (viene rimosso)
+      } else {
+        acc.push(item);
       }
-      // Rimuove completamente il prodotto se la quantità è 1
-      return prevCart.filter((item) => item.title !== productId);
-    });
-  };
+      return acc;
+    }, []);
+  });
+};
+
 
 // Funzione per acquistare un prodotto
 const purchaseItem = (productTitle) => {
