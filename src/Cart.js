@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { CartContext } from "./CartContext";
 
 function Cart() {
-  const { cart, removeFromCart } = useContext(CartContext);
+  const { cart, removeFromCart, purchaseItem } = useContext(CartContext);
 
   return (
     <Container>
@@ -17,9 +17,14 @@ function Cart() {
             <Details>
               <ProductTitle>{item.title}</ProductTitle>
               <ProductPrice>{item.price}</ProductPrice>
-              <RemoveButton onClick={() => removeFromCart(item.title)}>
-                Rimuovi
-              </RemoveButton>
+              <ButtonContainer>
+                <RemoveButton onClick={() => removeFromCart(item.title)}>
+                  Rimuovi
+                </RemoveButton>
+                <PurchaseButton onClick={() => purchaseItem(item.title)}>
+                  Acquista
+                </PurchaseButton>
+              </ButtonContainer>
             </Details>
           </CartItem>
         ))
@@ -93,6 +98,25 @@ const RemoveButton = styled.button`
 
   &:hover {
     background-color: #c06000;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const PurchaseButton = styled.button`
+  padding: 5px 10px;
+  font-size: 14px;
+  color: white;
+  background-color: #008000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #006400;
   }
 `;
 

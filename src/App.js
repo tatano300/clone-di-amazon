@@ -7,6 +7,7 @@ import SelectAddress from './SelectAddress';
 import ProductPage from './ProductPage';
 import { CartProvider } from './CartContext';
 import Account from './Account'
+import OrderHistory from './OrderHistory';
 
 function App() {
   return (
@@ -26,6 +27,9 @@ function App() {
             </Route>
             <Route path="/account">
               <Account />
+            </Route>
+            <Route path="/returns">
+             <OrderHistory/>
             </Route>
             <Route path="/">
               <Home />

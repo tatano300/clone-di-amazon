@@ -6,6 +6,7 @@ const CartContext = createContext();
 // Crea il provider
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+  const [orders, setOrders] = useState([]); // Stato per gli ordini
   const [address, setAddress] = useState(""); // Stato per l'indirizzo
 
   // Aggiunge un prodotto al carrello, incrementa la quantità se esiste già
@@ -38,13 +39,25 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  return (
-    <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, address, setAddress }} // Aggiunto address e setAddress
-    >
-      {children}
-    </CartContext.Provider>
-  );
+// Funzione per acquistare un prodotto
+const purchaseItem = (productTitle) => {
+  setCart((prevCart) => {
+    const productToPurchase = prevCart.find((item) => item.title === productTitle);
+    if (productToPurchase) {
+      setOrders((prevOrders) => [...prevOrders, productToPurchase]);
+      return prevCart.filter((item) => item.title !== productTitle);
+    }
+    return prevCart;
+  });
+};
+
+return (
+  <CartContext.Provider
+    value={{ cart, addToCart, removeFromCart, purchaseItem, orders, address, setAddress }}
+  >
+    {children}
+  </CartContext.Provider>
+);
 };
 
 export { CartContext };
